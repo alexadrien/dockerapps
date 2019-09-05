@@ -16,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          <a href="http://localhost/admin">Please visit http://localhost/admin</a>
         </a>
       </header>
     </div>
