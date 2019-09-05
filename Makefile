@@ -2,6 +2,7 @@
 
 install:
 	docker-compose build --no-cache
+	make migrate_db
 
 start:
 	docker-compose up -d
