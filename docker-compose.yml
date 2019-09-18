@@ -42,25 +42,3 @@ services:
 #    depends_on:
 #      - front
 #      - back
-# Prod
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: django
-      POSTGRES_PASSWORD: django
-      POSTGRES_DB: django
-    ports:
-      - 5432:5432
-  back:
-    build:
-      context: ./back
-      dockerfile: ./Dockerfile.deployed
-    working_dir: /usr/src
-    volumes:
-      - ./back:/usr/src
-    command: gunicorn --bind 0.0.0.0:8000 api.wsgi
-    ports:
-      - 8000:8000
-    depends_on:
-      - db
