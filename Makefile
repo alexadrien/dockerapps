@@ -29,3 +29,10 @@ make_migrations:
 create_super_user:
 	make start
 	docker-compose exec back python manage.py createsuperuser
+
+## UTILS
+
+save:
+	git add .
+	git commit -a -m "save"
+	git push

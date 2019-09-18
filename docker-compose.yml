@@ -1,16 +1,48 @@
 version: '3.6'
 services:
-  front:
-    build:
-      context: ./front
-      dockerfile: ./Dockerfile
-    working_dir: /usr/src
-    volumes:
-      - ./front:/usr/src
-      - /usr/src/node_modules
-    command: npm run start
-    ports:
-      - 3000:3000
+# Local
+#  front:
+#    build:
+#      context: ./front
+#      dockerfile: ./Dockerfile
+#    working_dir: /usr/src
+#    volumes:
+#      - ./front:/usr/src
+#      - /usr/src/node_modules
+#    command: npm run start
+#    ports:
+#      - 3000:3000
+#  db:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_USER: django
+#      POSTGRES_PASSWORD: django
+#      POSTGRES_DB: django
+#    ports:
+#      - 5432:5432
+#  back:
+#    build:
+#      context: ./back
+#      dockerfile: ./Dockerfile
+#    working_dir: /usr/src
+#    command: python manage.py runserver 0.0.0.0:8000
+#    volumes:
+#      - ./back:/usr/src
+#    ports:
+#      - 8000:8000
+#    depends_on:
+#      - db
+#  server:
+#    image: nginx:latest
+#    volumes:
+#       - ./server/nginx.conf:/etc/nginx/conf.d/default.conf
+#    ports:
+#      - 80:80
+#    depends_on:
+#      - front
+#      - back
+# Prod
   db:
     image: postgres
     restart: always
@@ -23,21 +55,12 @@ services:
   back:
     build:
       context: ./back
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.deployed
     working_dir: /usr/src
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./back:/usr/src
+    command: gunicorn --bind 0.0.0.0:8000 api.wsgi
     ports:
       - 8000:8000
     depends_on:
       - db
-  server:
-    image: nginx:latest
-    volumes:
-       - ./server/nginx.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - 80:80
-    depends_on:
-      - front
-      - back
